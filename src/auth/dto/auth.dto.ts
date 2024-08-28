@@ -10,6 +10,9 @@ export class RegisterDto {
   password: string;
 
   @IsString()
+  name: string;
+
+  @IsString()
   @IsOptional()
   role?: Role; 
 }

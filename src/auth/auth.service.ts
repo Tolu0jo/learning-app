@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
 import * as bcrypt from 'bcryptjs';
@@ -11,17 +11,25 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async register(email: string, password: string, role: Role = Role.LEARNER) {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await this.userService.createUser(email, hashedPassword, role);
+  async register(
+    name: string,
+    email: string,
+    password: string,
+    role: Role = Role.LEARNER,
+  ) {
+    const user = await this.userService.createUser(name, email, password, role);
+    delete user.password_hash;
     return user;
   }
   async validateUser(email: string, password: string): Promise<any> {
     const user = await this.userService.findByEmail(email);
-    if (user && await bcrypt.compare(password, user.password_hash)) {
+    if (!user) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+    const isMatch = await bcrypt.compare(password, user.password_hash);
+    if (isMatch) {
       return user;
     }
-    return null;
   }
 
   async login(user: any) {

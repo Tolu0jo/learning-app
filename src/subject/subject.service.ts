@@ -1,10 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UseGuards } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateSubjectDto } from './dto/subject.dto';
 import uuid from "uuid"
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 
 @Injectable()
+
 export class SubjectService {
   constructor(private readonly prisma: PrismaService) {}
 
