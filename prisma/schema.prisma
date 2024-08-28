@@ -24,7 +24,6 @@ model User {
   name          String?
   role          Role         @default(LEARNER)
   password_hash String
-  salt          String
   completions   Completion[]
 }
 

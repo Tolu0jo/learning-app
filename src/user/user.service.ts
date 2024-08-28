@@ -3,7 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { User, Role } from '@prisma/client';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
-
+import uuid from "uuid";
 @Injectable()
 export class UserService {
   constructor(
@@ -20,11 +20,10 @@ export class UserService {
     const hashedPassword = await bcrypt.hash(password, 10);
     return this.prisma.user.create({
       data: {
-        id:"odpod",
+        id: uuid(),
         email,
         password_hash: hashedPassword,
         role,
-        salt: '', // You should handle salt generation and storage
       },
     });
   }
