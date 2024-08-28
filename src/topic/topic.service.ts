@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateTopicDto } from './dto/topic.dto';
-import uuid from 'uuid';
+import {v4 as uuid} from "uuid"
 @Injectable()
 export class TopicService {
   constructor(private readonly prisma: PrismaService) {}
@@ -19,11 +19,11 @@ export class TopicService {
   }
 
   async getTopics() {
-    return this.prisma.topic.findMany();
+    return await this.prisma.topic.findMany();
   }
 
   async getTopicById(id: string) {
-    return this.prisma.topic.findUnique({
+    return await this.prisma.topic.findUnique({
       where: { id },
     });
   }

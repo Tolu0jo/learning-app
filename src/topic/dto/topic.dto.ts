@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
 
 export class CreateTopicDto {
   @IsString()
@@ -6,7 +6,7 @@ export class CreateTopicDto {
   title: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   videoUrl: string;
 
   @IsString()

@@ -1,17 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateCompletionDto } from './dto/completion.dto';
-import uuid from 'uuid';
+import { v4 as uuid } from 'uuid';
 @Injectable()
-
 export class CompletionService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async createCompletion(createCompletionDto: CreateCompletionDto) {
+  async createCompletion(
+    createCompletionDto: CreateCompletionDto,
+    userId: string,
+  ) {
     return this.prisma.completion.create({
       data: {
         id: uuid(),
-        userId: createCompletionDto.userId,
+        userId,
         topicId: createCompletionDto.topicId,
         subjectId: createCompletionDto.subjectId,
       },
@@ -29,6 +31,10 @@ export class CompletionService {
   }
 
   async getLearnerRankings(subjectId: string) {
+    const totalTopics = await this.prisma.topic.count({
+      where: { subjectId },
+    });
+
     const completionCounts = await this.prisma.completion.groupBy({
       by: ['userId'],
       where: {
@@ -49,14 +55,15 @@ export class CompletionService {
         const user = await this.prisma.user.findUnique({
           where: { id: completion.userId },
         });
+        delete user.password_hash;
         return {
           user,
-          completedTopicsCount: completion._count.topicId,
+          percentageCompletion: (completion._count.topicId / totalTopics) * 100,
         };
       }),
     );
 
-    return rankings;
+    return { rankings };
   }
 
   async isTopicCompletedByUser(

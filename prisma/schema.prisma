@@ -53,4 +53,6 @@ model Completion {
   user        User     @relation(fields: [userId], references: [id])
   topic       Topic    @relation(fields: [topicId], references: [id])
   subject     Subject  @relation(fields: [subjectId], references: [id])
+
+  @@unique([userId, topicId])
 }

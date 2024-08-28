@@ -22,10 +22,16 @@ export class CompletionController {
   constructor(private readonly completionService: CompletionService) {}
 
   @Post()
-  @Roles(Role.TEACHER)
+  @Roles(Role.LEARNER)
   @UseGuards(RolesGuard)
-  async createCompletion(@Body() createCompletionDto: CreateCompletionDto) {
-    return this.completionService.createCompletion(createCompletionDto);
+  async createCompletion(
+    @Body() createCompletionDto: CreateCompletionDto,
+    @Req() req: AuthenticatedRequest,
+  ) {
+    return this.completionService.createCompletion(
+      createCompletionDto,
+      req.user.id,
+    );
   }
 
   @Get()
@@ -33,6 +39,8 @@ export class CompletionController {
     return this.completionService.getCompletions();
   }
 
+  @Roles(Role.TEACHER)
+  @UseGuards(RolesGuard)
   @Get('rankings/:subjectId')
   async getLearnerRankings(@Param('subjectId') subjectId: string) {
     return this.completionService.getLearnerRankings(subjectId);
@@ -54,6 +62,8 @@ export class CompletionController {
   }
 
   @Get('subject-progress')
+  @Roles(Role.LEARNER)
+  @UseGuards(RolesGuard)
   async getSubjectProgress(
     @Query('subjectId') subjectId: string,
     @Req() req: AuthenticatedRequest,
@@ -64,6 +74,6 @@ export class CompletionController {
         userId,
         subjectId,
       );
-    return { totalTopics, completedTopics };
+    return { progress :( completedTopics /totalTopics) * 100};
   }
 }

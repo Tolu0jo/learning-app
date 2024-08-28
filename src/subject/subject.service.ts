@@ -1,8 +1,8 @@
 import { Injectable, UseGuards } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateSubjectDto } from './dto/subject.dto';
-import uuid from "uuid"
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import {v4 as uuid} from "uuid"
+
 
 
 @Injectable()
