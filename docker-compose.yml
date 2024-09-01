@@ -2,9 +2,9 @@ version: '3.8'
 
 services:
   app:
-    image: your-username/your-app-name:tag
+    image: teetony/learning-app:v1.0
     ports:
-      - "3000:3000"
+      - "3001:3001"
     environment:
       JWT_SECRET: "${JWT_SECRET}"
       DATABASE_URL: "${DATABASE_URL}"
