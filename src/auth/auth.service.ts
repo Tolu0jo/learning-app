@@ -35,7 +35,7 @@ export class AuthService {
   async login(user: any) {
     return {
       access_token: await this.userService.generateJwtToken(user),
-      role: user.role,
+      user: user,
     };
   }
 }

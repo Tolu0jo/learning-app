@@ -57,8 +57,9 @@ export class CompletionService {
         });
         delete user.password_hash;
         return {
-          user,
-          percentageCompletion: (completion._count.topicId / totalTopics) * 100,
+          name: user.name,
+          completedTopics: completion._count.topicId,
+          totalTopics,
         };
       }),
     );

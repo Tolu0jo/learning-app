@@ -35,6 +35,6 @@ export class AuthController {
       throw new UnauthorizedException('Invalid credentials');
     }
     const tokens = await this.authService.login(user);
-    return res.json({ tokens });
+    return res.json(tokens);
   }
 }

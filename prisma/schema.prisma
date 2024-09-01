@@ -30,7 +30,7 @@ model User {
 model Subject {
   id          String       @id
   title       String
-  topics      Topic[]
+  topics      Topic[] 
   completions Completion[]
 }
 
