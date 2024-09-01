@@ -14,7 +14,7 @@ export class UserService {
   constructor(
     private prisma: PrismaService,
     private jwtService: JwtService,
-    private configService: ConfigService
+    private configService: ConfigService,
   ) {}
 
   async createUser(
@@ -60,11 +60,10 @@ export class UserService {
   async generateJwtToken(user: User): Promise<string> {
     const payload = { id: user.id, role: user.role };
     const secret = this.configService.get('JWT_SECRET');
-    console.log(secret);
     const token = await this.jwtService.signAsync(payload, {
       expiresIn: '3d',
       secret,
     });
-    return token
+    return token;
   }
 }
