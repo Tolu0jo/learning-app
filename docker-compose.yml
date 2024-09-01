@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  app:
+    image: your-username/your-app-name:tag
+    ports:
+      - "3000:3000"
+    environment:
+      JWT_SECRET: "${JWT_SECRET}"
+      DATABASE_URL: "${DATABASE_URL}"
+    env_file:
+      - .env
