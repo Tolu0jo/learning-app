@@ -9,13 +9,10 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   const port = configService.get<number>('PORT') || 3030;
-
+  const app_url =
+    configService.get<string>('APP_URL') || 'http://localhost:3000';
   app.enableCors({
-    origin: [
-      'http://localhost:3000',
-      'http://localhost:4000',
-      'https://learning-app-tau.vercel.app',
-    ],
+    origin: [app_url],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
     allowedHeaders: 'Content-Type, Authorization',
@@ -26,6 +23,8 @@ async function bootstrap() {
     }),
   );
 
-  await app.listen(port);
+  await app.listen(port, () => {
+    console.log(`server running on ${port}`);
+  });
 }
 bootstrap();

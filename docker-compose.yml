@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   app:
-    image: teetony/learning-app:v1.0
+    image: teetony/learning-app:latest
     ports:
       - "3001:3001"
     environment:
